@@ -1,6 +1,11 @@
 SndBuf kick => dac;
 SndBuf snare => dac;
-SndBuf hiHat => dac;
+SndBuf hihat => dac;
 SndBuf clap => dac;
 
 me.dir() => string path
+
+"/audio/kick1.wav" => string kickName;
+"/audio/snare1.wav" => string snareName;
+"/audio/hihat1.wav" => string hihatName;
+"/audio/clap1.wav" => string clapName;
