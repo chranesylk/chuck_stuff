@@ -50,6 +50,8 @@ me.dir() => string path;
 "audio/hihat1.wav" => string hihatName;
 "audio/clap1.wav" => string clapName;
 
+BPM bpm; 
+
 path + kickName => kickName;
 path + snareName => snareName;
 path + hihatName => hihatName;
@@ -69,11 +71,12 @@ while (true)
     <<< data[0], data[1], data[2] >>>;
     PlayBackSample(hihat, 0.2, 1);
     
-    1::second => now;
+    bpm.GetEighth(120)::second => now;
 }
 
-fun void PlayBackSample(SndBuf sample, float gain, float rate){
+fun void PlayBackSample(SndBuf sample, float gain, float rate)
+{
     0 => sample.pos;
     gain => sample.gain;
     rate => sample.rate;
-    }
+}   
