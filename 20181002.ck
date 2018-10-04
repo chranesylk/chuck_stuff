@@ -37,6 +37,11 @@ spork ~ serialPoller();
 
 
 
+120 => int tempo;
+[0.2,0.2,0.2,0.2,0.2,0.2,0.0,0.0,0.2,0.0,0.2,0.0,0.2,0.0,0.0,0.0] @=> float hihatPattern[];
+[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0] @=> float snarePattern[];
+[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0] @=> float clapPattern[];
+[0.0,0.0,0.0,0.0] @=> float kickPattern[];
 
 SndBuf kick => dac;
 SndBuf snare => dac;
@@ -69,14 +74,19 @@ while (true)
 {
     <<<kickName>>>;
     <<< data[0], data[1], data[2] >>>;
-    PlayBackSample(hihat, 0.2, 1);
+    for(0 => int i; i < hihatPattern.cap(); i++)
+    {
+        PlayBackSample(hihat,16, hihatPattern[i], 1);
+    }
     
-    bpm.GetEighth(120)::second => now;
+    
 }
 
-fun void PlayBackSample(SndBuf sample, float gain, float rate)
+fun void PlayBackSample(SndBuf sample, int noteType, float gain, float rate)
 {
     0 => sample.pos;
     gain => sample.gain;
     rate => sample.rate;
+    //bpm.GetEighth(tempo) ::second => now;
+    bpm.DynamicSet(noteType,tempo)::second => now;
 }   
