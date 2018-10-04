@@ -67,10 +67,13 @@ while (true)
 {
     <<<kickName>>>;
     <<< data[0], data[1], data[2] >>>;
-    0 => kick.pos;
-    0.2 => kick.gain;
-    1=>kick.rate;
+    PlayBackSample(hihat, 0.2, 1);
     
     1::second => now;
 }
 
+fun void PlayBackSample(SndBuf sample, float gain, float rate){
+    0 => sample.pos;
+    gain => sample.gain;
+    rate => sample.rate;
+    }
