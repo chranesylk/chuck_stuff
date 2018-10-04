@@ -72,8 +72,13 @@ clapName => clap.read;
 
 while (true)
 {
-    <<<kickName>>>;
-    <<< data[0], data[1], data[2] >>>;
+    //<<< data[0], data[1], data[2] >>>;
+    
+    for(0 => int i; i < hihatPattern.cap(); i++){
+        data[0]/100.0 => hihatPattern[i];
+        <<<data[0]/100.0>>>;
+        bpm.GetSixteenth(tempo)::second => now;
+        }
     for(0 => int i; i < hihatPattern.cap(); i++)
     {
         PlayBackSample(hihat,16, hihatPattern[i], 1);
