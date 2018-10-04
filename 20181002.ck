@@ -38,7 +38,7 @@ spork ~ serialPoller();
 
 
 120 => int tempo;
-[0.2,0.2,0.2,0.2,0.2,0.2,0.0,0.0,0.2,0.0,0.2,0.0,0.2,0.0,0.0,0.0] @=> float hihatPattern[];
+//[0.2,0.2,0.2,0.2,0.2,0.2,0.0,0.0,0.2,0.0,0.2,0.0,0.2,0.0,0.0,0.0] @=> float hihatPattern[];
 [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0] @=> float snarePattern[];
 [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0] @=> float clapPattern[];
 [0.0,0.0,0.0,0.0] @=> float kickPattern[];
@@ -55,7 +55,7 @@ me.dir() => string path;
 "audio/hihat1.wav" => string hihatName;
 "audio/clap1.wav" => string clapName;
 
-BPM bpm; 
+
 
 path + kickName => kickName;
 path + snareName => snareName;
@@ -70,28 +70,60 @@ clapName => clap.read;
 // COMPOSITION
 
 
-while (true)
+/*while (true)
 {
     //<<< data[0], data[1], data[2] >>>;
+    //Update Sequence with income data
     
-    for(0 => int i; i < hihatPattern.cap(); i++){
-        data[0]/100.0 => hihatPattern[i];
+    //UpdateSequence(kickPattern, 4, data[1]);
+    //UpdateSequence(snarePattern, 8, data[2]);
+    //UpdateSequence(clapPattern, 8, data[3]);
+    
+
+    
+    
+}*/
+
+
+//spork~PlayBackSample(kick,4,data[1],1 );
+//UpdateSequence(hihatPattern, 16, data[0]);
+//PlaySequence(hihat,hihatPattern);
+
+/*fun void UpdateSequence(float pattern[], int noteType, int incomeData)
+{
+    for(0 => int i; i < pattern.cap(); i++){
+        incomeData/100.0 => pattern[i];
         <<<data[0]/100.0>>>;
-        bpm.GetSixteenth(tempo)::second => now;
-        }
-    for(0 => int i; i < hihatPattern.cap(); i++)
-    {
-        PlayBackSample(hihat,16, hihatPattern[i], 1);
-    }
+        bpm.DynamicSet(noteType,tempo)::second => now;
+    }    
     
+}*/
+
+fun void PlaySequence(SndBuf sample, float pattern[])
+{
+        //Playback samples based on the sequence
+    for(0 => int i; i < pattern.cap(); i++)
+    {
+        PlayBackSample(sample,pattern.cap(), pattern[i], 1);
+    }
     
 }
 
 fun void PlayBackSample(SndBuf sample, int noteType, float gain, float rate)
 {
-    0 => sample.pos;
-    gain => sample.gain;
-    rate => sample.rate;
-    //bpm.GetEighth(tempo) ::second => now;
-    bpm.DynamicSet(noteType,tempo)::second => now;
+    BPM bpm; 
+    120 => int tempo;
+    while(true){
+        0 => sample.pos;
+        data[0]/100.0 => sample.gain;
+        rate => sample.rate;
+        <<<data[0]/100.0>>>;
+        //bpm.GetEighth(tempo) ::second => now;
+        bpm.DynamicSet(noteType,tempo)::second => now;
+    }
 }   
+
+
+spork~PlayBackSample(hihat,16,data[0],1 );
+spork~PlayBackSample(kick,4,data[1],1 );
+while(true) 1::second => now;
